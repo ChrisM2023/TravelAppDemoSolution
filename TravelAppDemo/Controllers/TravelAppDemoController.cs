@@ -43,17 +43,6 @@ namespace TravelAppDemo.Controllers
             TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context, id);
             return View(model);
         }
-        public IActionResult GetAllPastEvents()
-        {
-            bool  
-            return View();
-        }
-
-        public IActionResult GetAllFutureEvents()
-        {
-            
-            return View();
-        }
 
         public IActionResult Delete(int id)
         {
@@ -69,13 +58,16 @@ namespace TravelAppDemo.Controllers
             return View("Index", model);
         }
         public IActionResult Completed()
-        { 
-            return View();
+        {
+            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context);
+            model.CurrentTravelAppDemo.HasDone = true;
+            return View(model);
         }
         public IActionResult UnCompleted()
         {
-           
-            return View();
+            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context);
+            model.CurrentTravelAppDemo.HasDone = false;
+            return View(model);
         }
     }
 }
