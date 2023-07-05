@@ -23,14 +23,13 @@ namespace TravelAppDataAccess.Repositories
         }
         public void Update(TravelAppDemoModel travelAppDemoModel)
         {
-            TravelAppDemoModel existingAppointment = _context.TravelAppDemoModel.Find(travelAppDemoModel.TravelId);
+            TravelAppDemoModel existingAppointment = _context.TravelAppDemoModel.Find(travelAppDemoModel.TravelId)!;
 
             existingAppointment.Activity = travelAppDemoModel.Activity;
             existingAppointment.HasDone = travelAppDemoModel.HasDone;
             existingAppointment.Mandatory = travelAppDemoModel.Mandatory;
             existingAppointment.Description = travelAppDemoModel.Description;
             existingAppointment.Companion = travelAppDemoModel.Companion;
-            existingAppointment.Message = travelAppDemoModel.Message;
             existingAppointment.Destination = travelAppDemoModel.Destination;
             existingAppointment.Appointment = travelAppDemoModel.Appointment;
           
@@ -38,7 +37,7 @@ namespace TravelAppDataAccess.Repositories
         }
         public void Delete(int travelId)
         {
-            TravelAppDemoModel existingAppointment = _context.TravelAppDemoModel.Find(travelId);
+            TravelAppDemoModel existingAppointment = _context.TravelAppDemoModel.Find(travelId)!;
             _context.Remove(existingAppointment);
             _context.SaveChanges();
 
@@ -49,7 +48,7 @@ namespace TravelAppDataAccess.Repositories
         }
         public TravelAppDemoModel GetAppointmentByID(int id)
         {
-            return _context.TravelAppDemoModel.Find(id);
+            return _context.TravelAppDemoModel.Find(id)!;
         }
         public IQueryable<TravelAppDemoModel> GetAll(bool isDone )
         {
