@@ -82,7 +82,7 @@ namespace TravelAppDemo.Models
         }
         IQueryable<TravelAppDemoModel> GetAllTravelAppDemoByCompleted(bool isCompleted)
         {
-            return _configuration.GetAll(isCompleted);
+            return _configuration.GetAll(isCompleted).ToList();
 
         }
     }
