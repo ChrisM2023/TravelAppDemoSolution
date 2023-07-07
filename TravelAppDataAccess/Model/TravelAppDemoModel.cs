@@ -18,7 +18,6 @@ namespace TravelAppDataAccess.Model
 
         public string Companion { get; set; }
 
-        public string Message { get; set; }
         public string Destination { get; set; }
         public DateTime Appointment { get; set; }
         public  string Notes { get; set; }

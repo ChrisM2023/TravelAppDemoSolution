@@ -23,6 +23,8 @@ namespace TravelAppDataAccess.Context
             modelBuilder.Entity<TravelAppDemoModel>(
                 entity =>
                 {
+                    
+                    entity.ToTable("TravelAppDemoTable");
                     entity.HasKey(e => e.TravelId);
                     entity.Property(e => e.TravelId);
 

@@ -13,7 +13,12 @@ namespace TravelAppDemo.Models
         public TravelAppDemoModel CurrentTravelAppDemo { get; set; }
         public bool IsActionSuccess { get; set; }
         public string ActionMessage { get; set; }
-        public TravelAppDemoViewModel(TravelAppDemoContext configuration)
+        public TravelAppDemoViewModel(TravelAppDemoContext configuration,bool completed)
+        {
+            _configuration = new TravelAppDemoRepositories(configuration);
+            TravelAppDemosList = GetAllTravelAppDemoByCompleted(completed);
+            CurrentTravelAppDemo = TravelAppDemosList.FirstOrDefault();
+        }  public TravelAppDemoViewModel(TravelAppDemoContext configuration)
         {
             _configuration = new TravelAppDemoRepositories(configuration);
             TravelAppDemosList = GetAllTravelAppDemo();
@@ -75,9 +80,9 @@ namespace TravelAppDemo.Models
         {
             return _configuration.GetAppointmentByID(travelId);   
         }
-        List<TravelAppDemoModel> GetAllTravelAppDemoByCompleted(bool isCompleted)
+        IQueryable<TravelAppDemoModel> GetAllTravelAppDemoByCompleted(bool isCompleted)
         {
-            return (List<TravelAppDemoModel>)_configuration.GetAll(isCompleted);
+            return _configuration.GetAll(isCompleted);
 
         }
     }
