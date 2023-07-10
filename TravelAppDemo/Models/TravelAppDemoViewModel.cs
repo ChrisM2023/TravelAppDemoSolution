@@ -7,12 +7,21 @@ namespace TravelAppDemo.Models
 {
     public class TravelAppDemoViewModel
     {
-        private readonly TravelAppDemoRepositories _configuration;
-
+        public int TravelId { get; set; }
+        public string Activity { get; set; }
+        public bool HasDone { get; set; }
+        public bool Mandatory { get; set; }
+        public string Description { get; set; }
+        public string Companion { get; set; }
+        public string Message { get; set; }
+        public string Destination { get; set; }
+        public DateTime Appointment { get; set; }
+        public string Notes { get; set; }
         public List<TravelAppDemoModel> TravelAppDemosList { get; set; }
         public TravelAppDemoModel CurrentTravelAppDemo { get; set; }
-        public bool IsActionSuccess { get; set; }
-        public string ActionMessage { get; set; }
+        
+
+/*
         public TravelAppDemoViewModel(TravelAppDemoContext configuration)
         {
             _configuration = new TravelAppDemoRepositories(configuration);
@@ -75,10 +84,12 @@ namespace TravelAppDemo.Models
         {
             return _configuration.GetAppointmentByID(travelId);   
         }
-        List<TravelAppDemoModel> GetAllTravelAppDemoByCompleted(bool isCompleted)
+
+        public List<TravelAppDemoModel> GetAllTravelAppDemoByCompleted(bool isCompleted)
         {
-            return (List<TravelAppDemoModel>)_configuration.GetAll(isCompleted);
+            return _configuration.GetAll(isCompleted).ToList();
 
         }
+*/
     }
 }

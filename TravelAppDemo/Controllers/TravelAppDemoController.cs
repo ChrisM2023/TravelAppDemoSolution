@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 using TravelAppDataAccess.Context;
 using TravelAppDataAccess.Model;
+using TravelAppDataAccess.Repositories;
 using TravelAppDemo.Models;
 using static Azure.Core.HttpHeader;
 
@@ -8,66 +10,137 @@ namespace TravelAppDemo.Controllers
 {
     public class TravelAppDemoController : Controller
     {
-        private readonly TravelAppDemoContext _context;
+        private readonly TravelAppDemoRepositories _repo;
 
-        public TravelAppDemoController(TravelAppDemoContext context)
+        public TravelAppDemoController()
         {
-            _context = context;
+            _repo = new TravelAppDemoRepositories();
         }
+
         public IActionResult Index()
         {
-            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context);
-            return View(model);
+            return View();
         }
-        
+
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         [HttpPost]
-        public IActionResult Index(int travelId, string activity, bool hasDone,
-            bool mandatory, string description, string companion,
-            string destination, DateTime appointment,string notes)
+        public IActionResult CreateOrUpdate(TravelAppDemoViewModel model)
         {
-            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context);
-
-            TravelAppDemoModel travelAppDemo = new( travelId,  activity,  hasDone,
-             mandatory,  description,  companion,
-             destination,  appointment,notes);
-
-            model.SaveAppointment(travelAppDemo);
-            model.IsActionSuccess = true;
-            model.ActionMessage = "Appointment has been saved successfully";
-
-            return View(model);
-        }
-        public IActionResult Update(int id)
-        {
-            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context, id);
-            return View(model);
-        }
-
-        public IActionResult Delete(int id)
-        {
-            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context);
-
-            if (id > 0)
+            var id = model.TravelId;
+            if(id > 0)
             {
-                model.RemoveAppoinment(id);
+                var updateRecord = new TravelAppDemoModel()
+                {
+                    TravelId = model.TravelId,
+                    Activity = model.Activity,
+                    HasDone = model.HasDone,
+                    Mandatory = model.Mandatory,
+                    Description = model.Description,
+                    Companion = model.Companion,
+                    Destination = model.Destination,
+                    Appointment = model.Appointment,
+                    Notes = model.Notes
+                };
+                _repo.Update(updateRecord);
             }
-
-            model.IsActionSuccess = true;
-            model.ActionMessage = "Appoinment has been deleted successfully";
-            return View("Index", model);
+            else
+            {
+                var newRecord = new TravelAppDemoModel()
+                {
+                    Activity = model.Activity,
+                    HasDone = model.HasDone,
+                    Mandatory = model.Mandatory,
+                    Description = model.Description,
+                    Companion = model.Companion,
+                    Destination = model.Destination,
+                    Appointment = model.Appointment,
+                    Notes = model.Notes
+                };
+                _repo.Create(newRecord);
+            }
+            return RedirectToAction("UnCompleted");
         }
+
         public IActionResult Completed()
         {
-            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context);
-            model.CurrentTravelAppDemo.HasDone = true;
+            TravelAppDemoViewModel model = new TravelAppDemoViewModel();
+            if (model.Mandatory)
+            {
+                model.Message = "Yes";
+            }
+            else
+            {
+                model.Message = "No";
+            }
+            model.TravelAppDemosList = GetAllPastRecords();
+            model.CurrentTravelAppDemo = model.TravelAppDemosList.FirstOrDefault();
             return View(model);
         }
+
         public IActionResult UnCompleted()
         {
-            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context);
-            model.CurrentTravelAppDemo.HasDone = false;
+            TravelAppDemoViewModel model = new TravelAppDemoViewModel();
+            if (model.Mandatory)
+            {
+                model.Message = "Yes";
+            }
+            else
+            {
+                model.Message = "No";
+            }
+            model.TravelAppDemosList = GetAllFutureRecords();
+            model.CurrentTravelAppDemo = model.TravelAppDemosList.FirstOrDefault();
+            
             return View(model);
+        }
+
+        public IActionResult Update(int id)
+        {
+            var eventDetail = _repo.GetAppointmentByID(id);
+            TravelAppDemoViewModel model = new TravelAppDemoViewModel();
+            model.CurrentTravelAppDemo = eventDetail;
+
+            return View(model);
+        }
+
+        public IActionResult DeleteFutureEvents(TravelAppDemoViewModel model)
+        {
+            var id = model.TravelId;
+            if (id > 0)
+            {
+                _repo.Delete(id);
+            }
+
+            return RedirectToAction("UnCompleted");
+        }
+
+        public IActionResult DeletePastEvents(TravelAppDemoViewModel model)
+        {
+            var id = model.TravelId;
+            if (id > 0)
+            {
+                _repo.Delete(id);
+            }
+
+            return RedirectToAction("Completed");
+        }
+
+        public List<TravelAppDemoModel> GetAllPastRecords()
+        {
+            TravelAppDemoModel model = new TravelAppDemoModel();
+            model.HasDone = true;
+            return _repo.GetAll(model).ToList();
+        }
+
+        public List<TravelAppDemoModel> GetAllFutureRecords()
+        {
+            TravelAppDemoModel model = new TravelAppDemoModel();
+            model.HasDone = false;
+            return _repo.GetAll(model).ToList();
         }
     }
 }
