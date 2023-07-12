@@ -11,9 +11,9 @@ namespace TravelAppDataAccess.Repositories
     public class TravelAppDemoRepositories
     {
         private readonly TravelAppDemoContext _context;
-        public TravelAppDemoRepositories(TravelAppDemoContext context)
+        public TravelAppDemoRepositories()
         {
-            _context = context;
+            _context = new TravelAppDemoContext();
         }
         public int Create(TravelAppDemoModel travelAppDemoModels)
         {
@@ -50,12 +50,12 @@ namespace TravelAppDataAccess.Repositories
         {
             return _context.TravelAppDemoModel.Find(id)!;
         }
-        public IQueryable<TravelAppDemoModel> GetAll(bool isDone )
+        public IQueryable<TravelAppDemoModel> GetAll(TravelAppDemoModel model)
         {
             return _context.Set<TravelAppDemoModel>()
                 .Where(x =>
-                                x.HasDone == isDone 
-                            
+                                x.HasDone == model.HasDone
+
                              );
         }
     } 

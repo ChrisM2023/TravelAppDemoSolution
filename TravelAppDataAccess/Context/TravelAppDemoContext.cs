@@ -14,7 +14,7 @@ namespace TravelAppDataAccess.Context
         {
         }
 
-        protected TravelAppDemoContext()
+        public TravelAppDemoContext()
         {
         }
         public DbSet<TravelAppDemoModel> TravelAppDemoModel {get;set;}
