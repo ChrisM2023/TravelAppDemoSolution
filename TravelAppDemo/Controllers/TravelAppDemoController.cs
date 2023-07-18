@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Diagnostics;
+using System;
 using TravelAppDataAccess.Context;
 using TravelAppDataAccess.Model;
 using TravelAppDataAccess.Repositories;
@@ -20,47 +22,20 @@ namespace TravelAppDemo.Controllers
         public IActionResult Index()
         {
             return View();
-<<<<<<< Updated upstream
-=======
+
         }
 
         public IActionResult Create()
         {
             return View();
->>>>>>> Stashed changes
         }
 
         [HttpPost]
         public IActionResult CreateOrUpdate(TravelAppDemoViewModel model)
         {
-<<<<<<< Updated upstream
-            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context);
-
-            TravelAppDemoModel travelAppDemo = new( travelId,  activity,  hasDone,
-             mandatory,  description,  companion,
-             destination,  appointment,notes);
-
-            model.SaveAppointment(travelAppDemo);
-            model.IsActionSuccess = true;
-            model.ActionMessage = "Appointment has been saved successfully";
-
-            return View(model);
-        }
-        public IActionResult Update(int id)
-        {
-            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context, id);
-            return View(model);
-        }
-
-        public IActionResult Delete(int id)
-        {
-            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context,id);
+            var id = model.TravelId;
 
             if (id > 0)
-=======
-            var id = model.TravelId;
-            if(id > 0)
->>>>>>> Stashed changes
             {
                 var updateRecord = new TravelAppDemoModel()
                 {
@@ -92,13 +67,15 @@ namespace TravelAppDemo.Controllers
                 _repo.Create(newRecord);
             }
             return RedirectToAction("UnCompleted");
+
+           
         }
+       
+
+     
 
         public IActionResult Completed()
         {
-<<<<<<< Updated upstream
-            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context,true);
-=======
             TravelAppDemoViewModel model = new TravelAppDemoViewModel();
             if (model.Mandatory)
             {
@@ -110,16 +87,14 @@ namespace TravelAppDemo.Controllers
             }
             model.TravelAppDemosList = GetAllPastRecords();
             model.CurrentTravelAppDemo = model.TravelAppDemosList.FirstOrDefault();
->>>>>>> Stashed changes
+
             return View(model);
         }
 
         public IActionResult UnCompleted()
         {
-<<<<<<< Updated upstream
-            TravelAppDemoViewModel model = new TravelAppDemoViewModel(_context,false);
-=======
             TravelAppDemoViewModel model = new TravelAppDemoViewModel();
+
             if (model.Mandatory)
             {
                 model.Message = "Yes";
@@ -131,7 +106,6 @@ namespace TravelAppDemo.Controllers
             model.TravelAppDemosList = GetAllFutureRecords();
             model.CurrentTravelAppDemo = model.TravelAppDemosList.FirstOrDefault();
             
->>>>>>> Stashed changes
             return View(model);
         }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,18 @@ namespace TravelAppDataAccess.Context
         {
         }
         public DbSet<TravelAppDemoModel> TravelAppDemoModel {get;set;}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.LogTo(message => Debug.WriteLine(message))
+                    .EnableSensitiveDataLogging();
+                optionsBuilder
+                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                optionsBuilder.
+                    UseSqlServer("Server=DCDDCD-KJP10PNQ\\SQLEXPRESS;Database=TravelAppDemoDb;Trusted_Connection=True;TrustServerCertificate=True;");
+            }
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TravelAppDemoModel>(
