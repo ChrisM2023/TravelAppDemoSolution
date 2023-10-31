@@ -9,7 +9,7 @@ namespace TravelAppDemo.Models
     {
         public int TravelId { get; set; }
         public string Activity { get; set; }
-        public bool HasDone { get; set; }
+        public string HasDone { get; set; }
         public bool Mandatory { get; set; }
         public string Description { get; set; }
         public string Companion { get; set; }

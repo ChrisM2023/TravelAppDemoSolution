@@ -29,11 +29,16 @@ namespace TravelAppDemo.Controllers
         {
             return View();
         }
-
+     
         [HttpPost]
-        public IActionResult CreateOrUpdate(TravelAppDemoViewModel model)
+        public IActionResult Completed(TravelAppDemoViewModel model)
         {
             var id = model.TravelId;
+
+            bool hasDone = false;
+
+            if (model.HasDone.ToLower() == "yes" || model.HasDone.ToLower() == "true")
+                hasDone = true;
 
             if (id > 0)
             {
@@ -41,7 +46,7 @@ namespace TravelAppDemo.Controllers
                 {
                     TravelId = model.TravelId,
                     Activity = model.Activity,
-                    HasDone = model.HasDone,
+                    HasDone = hasDone,
                     Mandatory = model.Mandatory,
                     Description = model.Description,
                     Companion = model.Companion,
@@ -56,7 +61,7 @@ namespace TravelAppDemo.Controllers
                 var newRecord = new TravelAppDemoModel()
                 {
                     Activity = model.Activity,
-                    HasDone = model.HasDone,
+                    HasDone = hasDone,
                     Mandatory = model.Mandatory,
                     Description = model.Description,
                     Companion = model.Companion,
@@ -66,7 +71,7 @@ namespace TravelAppDemo.Controllers
                 };
                 _repo.Create(newRecord);
             }
-            return RedirectToAction("UnCompleted");
+            return RedirectToAction("Index");
 
            
         }
@@ -108,19 +113,26 @@ namespace TravelAppDemo.Controllers
             
             return View(model);
         }
-
+         
         public IActionResult Update(int id)
         {
-            var eventDetail = _repo.GetAppointmentByID(id);
+            TravelAppDemoModel eventDetail = new TravelAppDemoModel();
+
+            if (id > 0)
+            {
+                 eventDetail = _repo.GetAppointmentByID(id);
+            }
+
             TravelAppDemoViewModel model = new TravelAppDemoViewModel();
             model.CurrentTravelAppDemo = eventDetail;
 
             return View(model);
-        }
 
-        public IActionResult DeleteFutureEvents(TravelAppDemoViewModel model)
+        }
+        
+        public IActionResult DeleteFutureEvents(int id)
         {
-            var id = model.TravelId;
+           
             if (id > 0)
             {
                 _repo.Delete(id);
@@ -129,9 +141,15 @@ namespace TravelAppDemo.Controllers
             return RedirectToAction("UnCompleted");
         }
 
-        public IActionResult DeletePastEvents(TravelAppDemoViewModel model)
+        public IActionResult Delete(int id)
         {
-            var id = model.TravelId;
+
+            return View("Completed");
+        }
+
+        public IActionResult DeletePastEvents(int id)
+        {
+            //var id = model.TravelId;
             if (id > 0)
             {
                 _repo.Delete(id);

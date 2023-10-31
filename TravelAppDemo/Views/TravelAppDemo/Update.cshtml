@@ -1,0 +1,74 @@
+﻿@model TravelAppDemoViewModel 
+
+
+@using TravelAppDataAccess.Model;
+
+@{
+    string pageType = Model.CurrentTravelAppDemo.TravelId > 0 ? "Update Appointment" : "Create Appointment";
+
+    ViewData["Title"] = $"TravelAppDemo | {pageType}";
+}
+
+<form action="~/TravelAppDemo/Completed" method="post">
+    <div>
+        <div class="row">
+            <div class="col-6 offset-3 text-center">
+                <h1 class="display-4" style="margin: 20px 0px;">@pageType</h1>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-3 offset-md-3 form-group">
+                <label>Activity: </label>
+                <input type="text" class="form-control" name="Activity" value="@Model.CurrentTravelAppDemo.Activity" />
+            </div>
+        </div>
+        <div class="form-row">
+
+            <div class="col-md-6 offset-md-3 form-group">
+                <label>HasDone: </label>
+                <input type="tel" class="form-control" name="HasDone" value="@Model.CurrentTravelAppDemo.HasDone" />
+            </div>  
+
+            <div class="col-md-6 offset-md-3 form-group">
+                <label>Mandatory: </label>
+                <input type="text" class="form-control" name="Mandatory" value="@Model.CurrentTravelAppDemo.Mandatory" />
+            </div>
+
+            <div class="col-md-6 offset-md-3 form-group">
+                <label>Description: </label>
+                <input type="text" class="form-control" name="Description" value="@Model.CurrentTravelAppDemo.Description" />
+            </div> 
+            
+            <div class="col-md-6 offset-md-3 form-group">
+                <label>Companion: </label>
+                <input type="text" class="form-control" name="Companion" value="@Model.CurrentTravelAppDemo.Companion" />
+            </div>  
+          
+
+            <div class="col-md-6 offset-md-3 form-group">
+                <label>Appointment: </label>
+                <input type="DateTime" class="form-control" name="Appointment" value="@Model.CurrentTravelAppDemo.Appointment" />
+            </div> 
+
+            <div class="col-md-6 offset-md-3 form-group">
+                <label>Destination: </label>
+                <input type="text" class="form-control" name="Destination" value="@Model.CurrentTravelAppDemo.Destination" />
+            </div>
+
+            <div class="col-md-6 offset-md-3 form-group">
+                <label>Notes: </label>
+                <input type="text" class="form-control" name="Notes" value="@Model.CurrentTravelAppDemo.Notes" />
+            </div>
+          
+        </div>
+
+      
+        <div class="form-row">
+            <div class="col-md-6 offset-md-3">
+                <button type="button" class="btn btn-secondary" onclick="location.href = '/TravelAppDemo/Index'">CANCEL</button>
+                <button type="submit" class="btn btn-primary">Save ClientInformation</button>
+            </div>
+        </div>
+     </div>
+    <input type="hidden" name="appointmentID" value="@Model.CurrentTravelAppDemo.TravelId" />
+</form>

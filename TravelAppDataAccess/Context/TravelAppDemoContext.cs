@@ -13,10 +13,12 @@ namespace TravelAppDataAccess.Context
     {
         public TravelAppDemoContext(DbContextOptions options) : base(options)
         {
+
         }
 
         public TravelAppDemoContext()
         {
+
         }
         public DbSet<TravelAppDemoModel> TravelAppDemoModel {get;set;}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

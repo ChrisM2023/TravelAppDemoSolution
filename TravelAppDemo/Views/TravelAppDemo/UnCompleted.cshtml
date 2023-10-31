@@ -20,7 +20,7 @@
     }
     function deleteAppointment() {
         var id = $("#hdnDeleteAppointmentId").val();
-        window.location.href = "/Appointments/Delete/" + id;
+        window.location.href = "/TravelAppDemo/DeleteFutureEvents/" + id;
     }
 </script>
 <input type="hidden" id="hdnDeleteAppointmentId" value="0" />
@@ -37,7 +37,7 @@
             </button>
         </div>
     }
-    <h1 class="display-4">CleaningAppDemo</h1>
+    <h1 class="display-4">TravelAppDemo</h1>
     <div class="row">
         <div class="col-md-10 offset-md-1">
             <table class="table">
@@ -52,7 +52,6 @@
                     <th> Destination</th>
                     <th> Appointment</th>
                     <th> Notes</th>
-                    <th colspan="2"><button type="button" onclick="javascript:openLocation('/Contacts/Update/0')" class="btn btn-success btn-sm">ADD NEW Appointment</button></th>
                 </tr>
                 @foreach (TravelAppDemoModel travelAppDemo in Model.TravelAppDemosList)
                 {
@@ -65,7 +64,7 @@
                         <th>@travelAppDemo.Appointment</th>
                         <th>@travelAppDemo.Notes</th>
 
-
+                        <td colspan="1"><button type="button" onclick="javascript:openLocation('/TravelAppDemo/Update/@travelAppDemo.TravelId')" class="btn btn-success btn-sm">Edit </button></td>
                         <td><button type="button" onclick="javascript:confirmDelete(@travelAppDemo.TravelId)" class="btn btn-danger btn-sm">DELETE</button></td>
                     </tr>
                 }
@@ -83,7 +82,7 @@
             <div class="modal-body">
                 <p>Are you sure you want to delete this appointment?</p>
                 <button type="button" onclick="javascript:cancelDelete()" class="btn btn-secondary btn-sm">CANCEL</button>
-                <button type="button" onclick="javascript:deleteContact()" class="btn btn-danger btn-sm">DELETE</button>
+                <button type="button" onclick="javascript:deleteAppointment()" class="btn btn-danger btn-sm">DELETE</button>
             </div>
         </div>
     </div>
